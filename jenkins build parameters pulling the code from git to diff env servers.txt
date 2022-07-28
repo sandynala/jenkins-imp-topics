@@ -1,0 +1,37 @@
+*** TO create build parameters and pulling the code from a particular githubbranch 
+to the different env to your local servers any other cloud servers.
+
+Step1:suppose usind aws cloud need to create instance and install the jenkins and in sg set the port as 8080.
+
+step2:then connect to the jenkins (give the aws publicip:portno(8080).
+
+step3: after login into the jenkins create nodes.
+
+** go to manage jenkins and click on manage nodes and cloud then click on new node.
+
+Create the node .
+
+Step4: create the newpipeline and provide the name and select the pipeline click on ok.
+
+Step5: after that select the option as this project is parameterzied.
+
+under that choice the name as env, in choices give env name like for eg dev,qa etc.
+
+and then in pipeline script give the code which is in the below.
+
+pipeline {
+    agent {
+        label params.env== "any" ? "" : params.env 
+    }
+
+    parameters {
+        choice(name: "env", choices: ["dev", "qa"])
+    }
+     stages {
+        stage("git checkout") {
+            steps {
+                git credentialsId: 'githubcredetinal name create in jenkins kind as username with password', url: 'github url address '
+            }
+        }
+    }
+}
